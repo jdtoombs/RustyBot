@@ -1,0 +1,25 @@
+{
+  "name": "rustybot",
+  "version": "1.0.0",
+  "description": "Discord bot integrated with the Rust+ application - functionality TBD",
+  "main": "main.js",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "discord.js-commando": "^0.12.3",
+    "dotenv": "^9.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdtoombs/RustyBot.git"
+  },
+  "author": "jdtoombs, nollidnosnhoj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdtoombs/RustyBot/issues"
+  },
+  "homepage": "https://github.com/jdtoombs/RustyBot#readme"
+}
