@@ -1,13 +1,7 @@
 import winston from 'winston'
+import { ILogger } from './interfaces';
 
-interface ILogger {
-  info: (message: string) => void;
-  debug: (message: string) => void;
-  warn: (message: string) => void;
-  error: (err: any) => void;
-}
-
-export default class Logger implements ILogger {
+export default class WinstonLogger implements ILogger {
   readonly logger: winston.Logger;
 
   constructor() {
