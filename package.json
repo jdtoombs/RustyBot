@@ -10,7 +10,8 @@
     },
     "devDependencies": {
         "@types/node": "^15.3.0",
-        "rustplus-api": "^1.2.0"
+        "rustplus-api": "^1.2.0",
+        "typescript": "^4.2.4"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
