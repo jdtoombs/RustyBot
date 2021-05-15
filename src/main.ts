@@ -5,7 +5,6 @@ import RustyBotClient from './client';
 dotenv.config();
 
 const bot = new RustyBotClient();
-// bot.loadCommands(resolve(__dirname, "commands"))
 bot.login(process.env.TOKEN)
   .catch((err) => {
     console.log(err);
