@@ -1,18 +1,12 @@
-import Discord from 'discord.js';
 import * as dotenv from 'dotenv';
-
-const client = new Discord.Client();
+import { resolve } from 'path'
+import RustyBotClient from './client';
 
 dotenv.config();
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user!.tag}!`);
-});
-
-client.on('message', (msg) => {
-  if (msg.content === '!test') {
-    msg.react('🤔');
-  }
-});
-
-client.login(process.env.TOKEN);
+const bot = new RustyBotClient();
+bot.login(process.env.TOKEN)
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  })
