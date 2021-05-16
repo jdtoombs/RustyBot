@@ -56,9 +56,14 @@ export default class EventHandler extends Discord.Collection<string, AbstractEve
       const stats = await stat(eventPath);
       if (stats.isFile() && (file.endsWith(".js") || file.endsWith(".ts"))) {
         const evtClass = require(eventPath).default;
-        const evt = new evtClass();
-        this._client[evt.once ? 'once' : 'on'](evt.name, (...args) => evt.run(this._client, ...args));
-        this._client.logger.info(`Registered ${evt.name} event.`)
+        const evt = new evtClass() as AbstractEvent;
+
+        if (this.has(evt.name)) {
+          this._client.logger.warn(`The ${evt.name} event already exists in cache.`)
+        } else {
+          this._client[evt.once ? 'once' : 'on'](evt.name, (...args) => evt.run(this._client, ...args));
+          this._client.logger.info(`Registered ${evt.name} event.`)
+        }
       }
     }
   }

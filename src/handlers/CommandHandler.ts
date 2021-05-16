@@ -84,6 +84,7 @@ export default class CommandHandler extends Discord.Collection<string, AbstractC
             this._client.logger.warn(`Command for ${alias} already exists in cache.`);
           } else {
             this.set(alias, command);
+            this._client.logger.info(`Registered ${alias} command.`)
           }
         }
       }
