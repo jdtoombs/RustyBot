@@ -22,14 +22,14 @@ export default class RustyBotClient extends Client implements IAsyncInitializer 
 
     this.eventHandler = new EventHandler(this, {
       directory: resolve(__dirname, "events")
-    })
+    });
 
     this.init().catch((err) => {
       this.logger.error(err);
     });
   }
 
-  public async init () {
+  public async init() {
     await this.login(process.env.TOKEN);
   }
 
