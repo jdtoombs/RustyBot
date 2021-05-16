@@ -8,7 +8,7 @@ import WinstonLogger from "./utils/logger";
 export default class RustyBotClient extends Client implements IAsyncInitializer {
   public logger: ILogger;
   public commandHandler: CommandHandler;
-  // public eventHandler: EventHandler;
+  public eventHandler: EventHandler;
 
   constructor() {
     super();
@@ -20,15 +20,13 @@ export default class RustyBotClient extends Client implements IAsyncInitializer 
       prefix: process.env.PREFIX
     });
 
-    // this.eventHandler = new EventHandler(this, resolve(__dirname, "events"))
+    this.eventHandler = new EventHandler(this, {
+      directory: resolve(__dirname, "events")
+    })
 
     this.init().catch((err) => {
       this.logger.error(err);
-    })
-
-    this.on('message', (message) => {
-      this.commandHandler.handleCommand(message);
-    })
+    });
   }
 
   public async init () {
