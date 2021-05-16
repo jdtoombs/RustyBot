@@ -72,7 +72,6 @@ export default class CommandHandler extends Discord.Collection<string, AbstractC
     const files = await readdir(dir);
     for(const file of files) {
       const commandPath = resolve(dir, file);
-      console.log(commandPath)
       const stats = await stat(commandPath);
       // the command directory should only have one sub-directory (for now)
       if (stats.isDirectory() && !category) {
