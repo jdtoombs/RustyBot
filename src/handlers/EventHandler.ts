@@ -1,7 +1,7 @@
-import Discord, { ClientEvents } from 'discord.js'
-import { promises as fsPromises } from 'fs'
+import Discord, { ClientEvents } from 'discord.js';
+import { promises as fsPromises } from 'fs';
 import { resolve } from 'path';
-import RustyBotClient from '../client'
+import RustyBotClient from '../client';
 import { IAsyncInitializer } from '../utils/interfaces';
 
 interface EventOptions {
@@ -41,7 +41,7 @@ export default class EventHandler extends Discord.Collection<string, AbstractEve
 
     this.init().catch((err) => {
       this._client.logger.error(err);
-    })
+    });
   }
 
   async init() {
@@ -51,18 +51,19 @@ export default class EventHandler extends Discord.Collection<string, AbstractEve
   async load(fileDirectory: string) {
     const { readdir, stat } = fsPromises;
     const files = await readdir(fileDirectory);
-    for(const file of files) {
+    for (const file of files) {
       const eventPath = resolve(fileDirectory, file);
       const stats = await stat(eventPath);
       if (stats.isFile() && (file.endsWith(".js") || file.endsWith(".ts"))) {
+        // eslint-disable-next-line security/detect-non-literal-require
         const evtClass = require(eventPath).default;
         const evt = new evtClass() as AbstractEvent;
 
         if (this.has(evt.name)) {
-          this._client.logger.warn(`The ${evt.name} event already exists in cache.`)
+          this._client.logger.warn(`The ${evt.name} event already exists in cache.`);
         } else {
           this._client[evt.once ? 'once' : 'on'](evt.name, (...args) => evt.run(this._client, ...args));
-          this._client.logger.info(`Registered ${evt.name} event.`)
+          this._client.logger.info(`Registered ${evt.name} event.`);
         }
       }
     }

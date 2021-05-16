@@ -3,4 +3,4 @@ import RustyBotClient from './client';
 
 dotenv.config();
 
-const bot = new RustyBotClient();
+new RustyBotClient();
