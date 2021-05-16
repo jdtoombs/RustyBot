@@ -7,7 +7,8 @@
         "discord.js": "^12.5.3",
         "discord.js-commando": "^0.12.3",
         "dotenv": "^9.0.2",
-        "rustplus-api": "^1.2.0"
+        "rustplus-api": "^1.2.0",
+        "winston": "^3.3.3"
     },
     "devDependencies": {
         "@types/node": "^15.3.0",
@@ -15,7 +16,8 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node dist/main.js"
+        "start": "node dist/main.js",
+        "build": "tsc"
     },
     "repository": {
         "type": "git",
