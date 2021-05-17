@@ -1,4 +1,4 @@
-FROM node:14 as base
+FROM node:14-alpine as base
 WORKDIR /usr/bot
 # Copy both package and package-lock.json
 COPY package*.json ./
