@@ -1,5 +1,5 @@
 import Discord, { ClientEvents } from 'discord.js';
-import { promises as fsPromises } from 'fs';
+import glob from 'glob';
 import { resolve } from 'path';
 import RustyBotClient from '../client';
 import { IAsyncInitializer } from '../utils/interfaces';
@@ -10,7 +10,7 @@ interface EventOptions {
 }
 
 export abstract class AbstractEvent {
-  public name: string;
+  public name: keyof ClientEvents;
   public once: boolean;
 
   constructor(options: EventOptions) {
@@ -45,16 +45,14 @@ export default class EventHandler extends Discord.Collection<string, AbstractEve
   }
 
   async init() {
-    await this.load(this._eventsDirectory);
+    this.load(this._eventsDirectory);
   }
 
-  async load(fileDirectory: string) {
-    const { readdir, stat } = fsPromises;
-    const files = await readdir(fileDirectory);
+  load(fileDirectory: string) {
+    const files = glob.sync(resolve(fileDirectory, '+(*.js|*.ts)'));
     for (const file of files) {
       const eventPath = resolve(fileDirectory, file);
-      const stats = await stat(eventPath);
-      if (stats.isFile() && (file.endsWith(".js") || file.endsWith(".ts"))) {
+      if (file.endsWith(".js") || file.endsWith(".ts")) {
         // eslint-disable-next-line security/detect-non-literal-require
         const evtClass = require(eventPath).default;
         const evt = new evtClass() as AbstractEvent;
