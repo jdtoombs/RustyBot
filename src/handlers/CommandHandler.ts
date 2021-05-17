@@ -8,12 +8,10 @@ interface CommandOptions {
   name: string;
   aliases: string[];
   permissions?: Discord.PermissionResolvable[];
-  category: string;
 }
 
 export abstract class AbstractCommand {
   public name: string;
-  public category: string;
   public aliases: string[];
   public permissions: Discord.PermissionResolvable[];
   public abstract run(context: CommandMessageContext): Promise<void>;
@@ -21,7 +19,6 @@ export abstract class AbstractCommand {
   constructor(options: CommandOptions) {
     this.name = options.name;
     this.aliases = options.aliases;
-    this.category = options.category;
     if (!this.aliases) {
       this.aliases = [this.name.toLowerCase()];
     }
