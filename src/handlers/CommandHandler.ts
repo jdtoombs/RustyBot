@@ -1,26 +1,19 @@
 import Discord from 'discord.js';
-import { promises as fsPromises } from 'fs';
+import glob from 'glob';
 import { resolve } from 'path';
 import RustyBotClient from '../client';
 import { IAsyncInitializer } from '../utils/interfaces';
-
-export interface CommandMessageContext {
-  prefix: string;
-  commandName: string;
-  content: string;
-  message: Discord.Message;
-  client: RustyBotClient;
-}
 
 interface CommandOptions {
   name: string;
   aliases: string[];
   permissions?: Discord.PermissionResolvable[];
-  category?: string;
+  category: string;
 }
 
 export abstract class AbstractCommand {
   public name: string;
+  public category: string;
   public aliases: string[];
   public permissions: Discord.PermissionResolvable[];
   public abstract run(context: CommandMessageContext): Promise<void>;
@@ -28,11 +21,20 @@ export abstract class AbstractCommand {
   constructor(options: CommandOptions) {
     this.name = options.name;
     this.aliases = options.aliases;
+    this.category = options.category;
     if (!this.aliases) {
       this.aliases = [this.name.toLowerCase()];
     }
     this.permissions = options.permissions ?? [];
   }
+}
+
+export interface CommandMessageContext {
+  prefix: string;
+  commandName: string;
+  content: string;
+  message: Discord.Message;
+  client: RustyBotClient;
 }
 
 interface CommandHandlerOptions {
@@ -64,21 +66,15 @@ export default class CommandHandler extends Discord.Collection<string, AbstractC
   }
 
   async init() {
-    await this.load(this._commandDirectory);
+    this.load(this._commandDirectory);
   }
 
-  async load(dir: string, category = "") {
-    const { readdir, stat } = fsPromises;
-    const files = await readdir(dir);
+  load(dir: string) {
+    const files = glob.sync(resolve(dir, '**/+(*.js|*.ts)'));
     for (const file of files) {
-      const commandPath = resolve(dir, file);
-      const stats = await stat(commandPath);
-      // the command directory should only have one sub-directory (for now)
-      if (stats.isDirectory() && !category) {
-        await this.load(commandPath, file);
-      } else if (stats.isFile() && (file.endsWith(".js") || file.endsWith(".ts"))) {
+      if (file.endsWith(".js") || file.endsWith(".ts")) {
         // eslint-disable-next-line security/detect-non-literal-require
-        const commandClass = require(commandPath).default;
+        const commandClass = require(file).default;
         const command = new commandClass() as AbstractCommand;
         for (const alias of command.aliases) {
           if (this.has(alias)) {

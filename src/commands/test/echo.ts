@@ -1,10 +1,11 @@
-import { AbstractCommand, CommandMessageContext } from "../handlers/CommandHandler";
+import { AbstractCommand, CommandMessageContext } from "../../handlers/CommandHandler";
 
 export default class EchoCommand extends AbstractCommand {
-  constructor() {
+  constructor(category: string) {
     super({
       name: 'echo',
-      aliases: ['echo']
+      aliases: ['echo'],
+      category: category
     });
   }
 
