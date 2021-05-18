@@ -6,7 +6,7 @@ export default class MessageEvent extends AbstractEvent {
   constructor() {
     super({
       name: 'message'
-    })
+    });
   }
 
   async run(client: RustyBotClient, message: Discord.Message) {

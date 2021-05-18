@@ -1,4 +1,4 @@
-import winston from 'winston'
+import winston from 'winston';
 import { ILogger } from './interfaces';
 
 export default class WinstonLogger implements ILogger {
@@ -10,7 +10,7 @@ export default class WinstonLogger implements ILogger {
         new winston.transports.Console()
       ],
       format: winston.format.printf(log => `[${log.level.toUpperCase()}] = ${log.message}`)
-    })
+    });
   }
 
   info(message: string) {
@@ -25,6 +25,7 @@ export default class WinstonLogger implements ILogger {
     this.logger.warn(message);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(err: any) {
     this.logger.error(err.stack ?? err.message);
   }
