@@ -1,0 +1,13 @@
+version: "3.9"
+# Eventually add our other services here
+services:
+  bot:
+    build: .
+    restart: on-failure:1
+    container_name: bot
+    volumes:
+      - ./src:/usr/bot/src
+      - ./types:/usr/bot/types
+    env_file: ./.env
+    ports:
+      - 3003:3003
